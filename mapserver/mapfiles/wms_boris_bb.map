@@ -1,0 +1,840 @@
+MAP
+    NAME "Bodenrichtwerte_Basis_BB"
+    STATUS ON
+    SIZE 600 600
+
+    #DEBUG 5
+    CONFIG "MS_ERRORFILE" "/var/log/mapserver.log"
+
+    LEGEND
+        STATUS ON
+        IMAGECOLOR 238 238 238
+        KEYSIZE 18 12
+        KEYSPACING 5 5
+        LABEL
+            TYPE TRUETYPE
+            FORCE TRUE
+            FONT arial
+            SIZE 8
+            COLOR 0 0 89
+        END
+    END
+
+    OUTPUTFORMAT
+        NAME "png"
+        MIMETYPE "image/png"
+        DRIVER "GD/PNG"
+        EXTENSION "png"
+        IMAGEMODE RGB
+        TRANSPARENT FALSE
+    END # OUTPUTFORMAT
+
+    IMAGECOLOR 255 255 255
+    IMAGETYPE PNG
+
+    EXTENT 231617.067162 5679129.67849 500632.745409 5947019.05744
+    UNITS meters
+        
+    PROJECTION
+        "init=epsg:25833"
+    END
+    
+    SYMBOLSET "/etc/mapserver/symbols/symbols.sym"
+    FONTSET "/etc/mapserver/fonts/fonts.list"
+
+    DEBUG ON
+    WEB
+        IMAGEPATH "/tmp/"
+        IMAGEURL "/tmp/"
+        METADATA
+            "wms_title"                         "Basisdienst BORIS BB 2022"
+            "ows_keywordlist"                   "WMS,OGC,Bodenrichtwerte,Richtwerte,BORIS,Grundstückswert,Bodenwert,Bodenpreis,AdVMIS"
+            "wms_abstract"                      ""
+            'ows_fees'                          'geldleistungsfrei, Datenlizenz Deutschland – Namensnennung – Version 2.0, URL: https://www.govdata.de/dl-de/by-2-0'
+            'ows_accessconstraints'             'Datenlizenz Deutschland – Namensnennung – Version 2.0; URL: https://www.govdata.de/dl-de/by-2-0 Die Namensnennung der Vermessungs- und Katasterverwaltung Brandenburg als Rechteinhaberin hat in folgender Weise zu erfolgen: ©GeoBasis-DE / LVermGeo BB (Jahr des Datenbezugs), dl-de/by-2-0, http://www.lvermgeo.BB.de [Daten bearbeitet]; Es gelten folgende Regelungen zu Gewährleistung und Haftung; URL: https://lvermgeo.bb.de/de/geodaten/opendata/gewaehrleistung-haftung/'
+            'ows_addresstype'                   'postal'
+            'ows_address'                       'Musterstraße 1'
+            'ows_city'                          'Musterstadt'
+            'ows_stateorprovince'               'DE-BB'
+            'ows_postcode'                      '01234'
+            'ows_country'                       'DE'
+            'ows_contactperson'                 'Max Mustermann'
+            'ows_contactinformation'            ''
+            'ows_contactorganization'           'Landesamt für Vermessung und Geobasisinformation Brandenburg'
+            'ows_contactposition'               'Geoinformationsdienste'
+            'ows_contactelectronicmailaddress'  'vertrieb@lvermegeo.bb.de'
+            'wms_contactfacsimiletelephone'     '+49 111 222 333'
+            'wms_contactvoicetelephone'         '+49 111 222 333'
+            "wms_srs"                           'EPSG:31466 EPSG:31467 EPSG:25833 EPSG:4326 EPSG:4258 EPSG:3857'
+            "wms_onlineresource"                "http://localhost:8081/wms/bb/boris_bb.fcgi?"
+            "wms_extent"                        "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_attribution_onlineresource"    "http://www.gutachterausschuesse.bb.de/"
+            "wms_attribution_title"             "BB Basisdienst 2022"
+            "wms_feature_info_mime_type"        "text/html"
+            'wms_encoding'                      'UTF-8'
+            'wms_enable_request'                '*'
+        END
+    END
+
+    # BB
+    LAYER
+        NAME 'Stadtumbaugebiet_StUb'
+        CONNECTION "user=postgres password='postgres' dbname=boris_bb host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom_point from (SELECT * FROM boris_bb WHERE entw ='B' and brw = '0') as foo using unique gid using srid=25833"
+
+        MINSCALE 0
+        MAXSCALE 24999
+
+        METADATA
+            "queryable" "true"
+            "wms_title" " BB Basisdienst 2022"
+            "wms_abstract" ""
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,,Brandenburg,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25833 EPSG:31466 EPSG:31467"
+            "wms_extent" "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+        TYPE POINT
+        STATUS ON
+
+        CLASSITEM 'verg'
+
+        CLASS
+            NAME "Stadtumbaugebiet_StUb"
+            STYLE
+                
+                WIDTH 1
+                OUTLINECOLOR 150 50 130
+            END
+            TEXT 'StUb'
+            LABEL
+                POSITION CC
+                FORCE TRUE
+                TYPE TRUETYPE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                ALIGN center
+                COLOR 150 50 130
+                OUTLINECOLOR 254 254 254
+                SIZE 10
+            END
+        END
+    END
+
+    LAYER
+        NAME 'Verfahrensgebiete_POI'
+        CONNECTION "user=postgres password='postgres' dbname=boris_bb host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom_point from (SELECT * FROM boris_bb WHERE verg = 'San' or verg = 'Entw') as foo using unique gid using srid=25833"
+
+        MINSCALE 0
+        MAXSCALE 24999
+
+        METADATA
+            "queryable" "true"
+            "wms_title" " BB Basisdienst 2022"
+            "wms_abstract" ""
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,,Brandenburg,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25833 EPSG:31466 EPSG:31467"
+            "wms_extent" "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+        TYPE POINT
+        STATUS ON
+
+        CLASSITEM 'verg'
+
+        CLASS
+            NAME "Verfahrensgebiete_POI"
+            STYLE
+                
+                WIDTH 1
+                OUTLINECOLOR 150 50 130
+            END
+            TEXT '[verg]'
+            
+            LABEL
+                POSITION CC
+                FORCE TRUE
+                TYPE TRUETYPE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                ALIGN center
+                COLOR 150 50 130
+                OUTLINECOLOR 254 254 254
+                SIZE 10
+            END
+        END
+    END
+
+    LAYER
+        NAME 'BB_9'
+        CONNECTION "user=postgres password='postgres' dbname=boris_bb host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom from (SELECT * FROM boris_bb WHERE (entw ='B' OR entw ='R' OR entw ='E') and brw != '0.00' and wgfz is null and flae is null) as foo using unique gid using srid=25833"
+
+        MINSCALE 0
+        MAXSCALE 4999
+
+        METADATA
+            "queryable" "true"
+            "wms_title" " BB Basisdienst 2022, bebaut"
+            "wms_abstract" ""
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,,Brandenburg,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25833 EPSG:31466 EPSG:31467"
+            "wms_extent" "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+
+        TYPE POLYGON
+        STATUS ON
+
+        CLASS
+            NAME "BAUFLAECHEN9"
+            TEXT '[brw] [entw]:[nuta]'
+            
+            LABEL
+                POSITION CC
+                FORCE TRUE
+                TYPE TRUETYPE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                ALIGN center
+                COLOR 150 50 130
+                OUTLINECOLOR 254 254 254
+                SIZE 8
+                WRAP ':'
+                STYLE
+                    GEOMTRANSFORM "labelpnt"
+                    SYMBOL 'simpleline'
+                    COLOR 150 50 130
+                    SIZE 40
+                END
+            END
+        END
+    END
+
+    LAYER
+        NAME 'BB_8'
+        CONNECTION "user=postgres password='postgres' dbname=boris_bb host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom from (SELECT * FROM boris_bb WHERE (entw ='B' OR entw ='R' OR entw ='E') and wgfz is null and flae is not null) as foo using unique gid using srid=25833"
+
+        MINSCALE 0
+        MAXSCALE 4999
+
+        METADATA
+            "queryable" "true"
+            "wms_title" " BB Basisdienst 2022, bebaut"
+            "wms_abstract" ""
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,,Brandenburg,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25833 EPSG:31466 EPSG:31467"
+            "wms_extent" "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+
+        TYPE POLYGON
+        STATUS ON
+        
+        CLASS
+            NAME "BAUFLAECHEN8"
+            TEXT '[brw] [entw]:[nuta] f[flae]'
+            
+            LABEL
+                POSITION CC
+                TYPE TRUETYPE
+                FORCE TRUE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                ALIGN center
+                COLOR 150 50 130
+                OUTLINECOLOR 254 254 254
+                SIZE 8
+                WRAP ':'
+                STYLE
+                    GEOMTRANSFORM "labelpnt"
+                    SYMBOL 'simpleline'
+                    COLOR 150 50 130
+                    SIZE 40
+                END
+            END
+        END
+    END
+
+    LAYER
+        NAME 'BB_7'
+        CONNECTION "user=postgres password='postgres' dbname=boris_bb host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom from (SELECT * FROM boris_bb WHERE (entw ='B' OR entw ='R' OR entw ='E') and wgfz is not null) as foo using unique gid using srid=25833"
+
+        MINSCALE 0
+        MAXSCALE 4999
+
+        METADATA
+            "queryable" "true"
+            "wms_title" " BB Basisdienst 2022, bebaut"
+            "wms_abstract" ""
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,,Brandenburg,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25833 EPSG:31466 EPSG:31467"
+            "wms_extent" "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+
+        TYPE POLYGON
+        STATUS ON
+        
+        CLASS
+            NAME "BAUFLAECHEN7"
+            TEXT '[brw] [entw]:[nuta] WGFZ[wgfz]'
+            
+            LABEL
+                #POSITION AUTO
+                POSITION CC
+                FORCE TRUE
+                TYPE TRUETYPE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                ALIGN center
+                COLOR 150 50 130
+                OUTLINECOLOR 254 254 254
+                SIZE 8
+                WRAP ':'
+                STYLE
+                    GEOMTRANSFORM "labelpnt"
+                    SYMBOL 'simpleline'
+                    COLOR 150 50 130
+                    SIZE 40
+                END
+            END
+        END
+    END
+
+    LAYER
+        NAME 'BB_6'
+        CONNECTION "user=postgres password='postgres' dbname=boris_bb host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom_point from (SELECT * FROM boris_bb WHERE (entw ='B' OR entw ='R' OR entw ='E') and brw != '0' and flae is not null) as foo using unique gid using srid=25833"
+
+        MINSCALE 5000
+        MAXSCALE 24999
+
+        METADATA
+            "queryable" "true"
+            "wms_title" " BB Basisdienst 2022"
+            "wms_abstract" ""
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,,Brandenburg,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25833 EPSG:31466 EPSG:31467"
+            "wms_extent" "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+        TYPE POINT
+        STATUS ON
+
+        CLASSITEM 'nuta'
+
+        CLASS
+            NAME "BAUFLAECHEN6"
+            STYLE
+                
+                WIDTH 1
+                OUTLINECOLOR 150 50 130
+            END
+            TEXT '[brw] [entw]:[nuta] f[flae]'
+            
+            LABEL
+                #POSITION AUTO
+                POSITION CC
+                FORCE TRUE
+                TYPE TRUETYPE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                ALIGN center
+                COLOR 150 50 130
+                OUTLINECOLOR 254 254 254
+                SIZE 8
+                WRAP ':'
+                STYLE
+                    GEOMTRANSFORM "labelpnt"
+                    SYMBOL 'simpleline'
+                    COLOR 150 50 130
+                    SIZE 40
+                END
+            END
+        END
+    END
+
+    LAYER
+        NAME 'BB_5'
+        CONNECTION "user=postgres password='postgres' dbname=boris_bb host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom_point from (SELECT * FROM boris_bb WHERE (entw ='B' OR entw ='R' OR entw ='E') and brw != '0' and wgfz is null and flae is null) as foo using unique gid using srid=25833"
+
+        MINSCALE 5000
+        MAXSCALE 24999
+
+        METADATA
+            "queryable" "true"
+            "wms_title" " BB Basisdienst 2022"
+            "wms_abstract" ""
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,,Brandenburg,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25833 EPSG:31466 EPSG:31467"
+            "wms_extent" "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+        TYPE POINT
+        STATUS ON
+
+        CLASSITEM 'nuta'
+
+        CLASS
+            NAME "BAUFLAECHEN5"
+            STYLE
+                
+                WIDTH 1
+                OUTLINECOLOR 150 50 130
+            END
+            TEXT '[brw] [entw]:[nuta]'
+            LABEL
+                POSITION CC
+                FORCE TRUE
+                TYPE TRUETYPE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                ALIGN center
+                COLOR 150 50 130
+                OUTLINECOLOR 254 254 254
+                SIZE 8
+                WRAP ':'
+                STYLE
+                    GEOMTRANSFORM "labelpnt"
+                    SYMBOL 'simpleline'
+                    COLOR 150 50 130
+                    SIZE 40
+                END
+            END
+        END
+    END
+
+    LAYER
+        NAME 'BB_4'
+        CONNECTION "user=postgres password='postgres' dbname=boris_bb host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom_point from (SELECT * FROM boris_bb WHERE (entw ='B' OR entw ='R' OR entw ='E') and wgfz is not null) as foo using unique gid using srid=25833"
+
+        MINSCALE 5000
+        MAXSCALE 24999
+
+        METADATA
+            "queryable" "true"
+            "wms_title" " BB Basisdienst 2022"
+            "wms_abstract" ""
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,,Brandenburg,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25833 EPSG:31466 EPSG:31467"
+            "wms_extent" "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+        TYPE POINT
+        STATUS ON
+
+        CLASSITEM 'nuta'
+
+        CLASS
+            NAME "BAUFLAECHEN4"
+            STYLE
+                
+                WIDTH 1
+                OUTLINECOLOR 150 50 130
+            END
+            TEXT '[brw] [entw]:[nuta] WGFZ[wgfz]'
+            
+            LABEL
+                #POSITION AUTO
+                POSITION CC
+                FORCE TRUE
+                TYPE TRUETYPE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                ALIGN center
+                COLOR 150 50 130
+                OUTLINECOLOR 254 254 254
+                SIZE 8
+                WRAP ':'
+                STYLE
+                    GEOMTRANSFORM "labelpnt"
+                    SYMBOL 'simpleline'
+                    COLOR 150 50 130
+                    SIZE 40
+                END
+            END
+        END
+    END
+
+    LAYER
+        NAME 'BB_3'
+        CONNECTION "user=postgres password='postgres' dbname=boris_bb host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom from (SELECT * FROM boris_bb WHERE (entw ='B' OR entw ='R' OR entw ='E') and wgfz is null and flae is not null) as foo using unique gid using srid=25833"
+
+        MINSCALE 5000
+        MAXSCALE 200000
+
+        METADATA
+            "queryable" "true"
+            "wms_title" " BB Basisdienst 2022, bebaut"
+            "wms_abstract" ""
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,,Brandenburg,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25833 EPSG:31466 EPSG:31467"
+            "wms_extent" "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+
+        TYPE POLYGON
+        STATUS ON
+        
+        # LABELITEM 'brw'
+
+        CLASS
+            NAME "BAUFLAECHEN3"
+            STYLE
+                
+                WIDTH 1
+                OUTLINECOLOR 150 50 130
+            END
+        END
+    END
+
+    LAYER
+        NAME 'Verfahrensgebiete'
+        CONNECTION "user=postgres password='postgres' dbname=boris_bb host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom from (SELECT * FROM boris_bb WHERE verg = 'San' or verg = 'Entw') as foo using unique gid using srid=25833"
+
+        MINSCALE 0
+        MAXSCALE 200000
+
+        METADATA
+            "queryable" "true"
+            "wms_title" " BB Basisdienst 2022, bebaut"
+            "wms_abstract" ""
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,,Brandenburg,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25833 EPSG:31466 EPSG:31467"
+            "wms_extent" "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+
+        TYPE POLYGON
+        STATUS ON
+        
+        CLASS
+            NAME "Verfahrensgebiete"
+            STYLE
+                COLOR 255 191 233
+                OPACITY 60
+            END
+        END
+    END
+
+    LAYER
+        NAME 'BB_2'
+        CONNECTION "user=postgres password='postgres' dbname=boris_bb host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom from (SELECT * FROM boris_bb WHERE (entw ='B' OR entw ='R' OR entw ='E')) as foo using unique gid using srid=25833"
+
+        MINSCALE 0
+        MAXSCALE 200000
+        LABELMINSCALE 0
+        LABELMAXSCALE 20000
+
+        METADATA
+            "queryable" "true"
+            "wms_title" " BB Basisdienst 2022, bebaut"
+            "wms_abstract" ""
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,,Brandenburg,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25833 EPSG:31466 EPSG:31467"
+            "wms_extent" "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+
+        TYPE POLYGON
+        STATUS ON
+        
+        CLASS
+            NAME "BAUFLAECHEN"
+            STYLE
+                
+                WIDTH 1
+                OUTLINECOLOR 150 50 130
+            END
+        END
+    END
+
+    # BB
+    LAYER
+        NAME 'BB_1'
+        CONNECTION "user=postgres password='postgres' dbname=boris_bb host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom from (SELECT * FROM boris_bb WHERE entw='LF') as foo using unique gid using srid=25833"
+
+        MINSCALE 0
+        MAXSCALE 266001
+
+        METADATA
+            "queryable" "true"
+            "wms_title" " BB Basisdienst 2022, landwirtschaftlich"
+            "wms_abstract" ""
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,,Brandenburg,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25833 EPSG:31466 EPSG:31467"
+            "wms_extent" "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+
+        TYPE POLYGON
+        STATUS ON
+        
+        CLASSITEM 'nuta'
+
+        CLASS
+            NAME "Ackerland und ackerfähiges Grünland (LF A)"
+            EXPRESSION (  '[nuta]' == 'A')
+            STYLE
+                WIDTH 1
+                OUTLINECOLOR 0 128 0
+            END
+
+            TEXT '[brw] [entw]:[nuta] [ergnuta] [acza]'
+            LABEL
+                POSITION CC
+                OFFSET 20 -50
+                TYPE TRUETYPE
+                FORCE TRUE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                ALIGN center
+                COLOR 0 64 0
+                OUTLINECOLOR 254 254 254
+                SIZE 8
+                WRAP ':'
+                STYLE
+                    GEOMTRANSFORM "labelpnt"
+                    SYMBOL 'simpleline'
+                    OFFSET 20 -50
+                    COLOR 0 64 0
+                    SIZE 40
+                END
+            END
+        END
+        CLASS
+            NAME "Dauergrünland (LF GR)"
+            EXPRESSION (  '[nuta]' == 'GR')
+            STYLE
+                WIDTH 2
+                OUTLINECOLOR 0 128 0
+            END
+            TEXT '[brw] [entw]:[nuta] [ergnuta] [grza]'
+            LABEL
+                POSITION CC
+                TYPE TRUETYPE
+                FORCE TRUE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                ALIGN center
+                COLOR 0 64 0
+                OUTLINECOLOR 254 254 254
+                SIZE 8
+                WRAP ':'
+                STYLE
+                    GEOMTRANSFORM "labelpnt"
+                    SYMBOL 'simpleline'
+                    COLOR 0 64 0
+                    SIZE 40
+                END
+            END
+        END
+        CLASS
+            NAME "Forstwirtschaftliche Flächen und Wald (LF F)"
+            EXPRESSION (  '[nuta]' == 'F')
+            STYLE
+                WIDTH 2
+                OUTLINECOLOR 0 128 0
+            END
+            TEXT '[brw] [entw]:[nuta] [ergnuta] [aufw]'
+            LABEL
+                POSITION CC
+                OFFSET -20 60
+                TYPE TRUETYPE
+                FORCE TRUE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                ALIGN center
+                COLOR 0 64 0
+                OUTLINECOLOR 254 254 254
+                SIZE 8
+                WRAP ':'
+                STYLE
+                    GEOMTRANSFORM "labelpnt"
+                    SYMBOL 'simpleline'
+                    OFFSET -20 60
+                    COLOR 0 64 0
+                    SIZE 40
+                END
+            END
+        END
+    END
+
+    LAYER
+        NAME 'BB_0'
+        CONNECTION "user=postgres password='postgres' dbname=boris_bb host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        PROCESSING "LABEL_NO_CLIP=True"
+        DATA "geom from (SELECT * FROM boris_bb WHERE entw='LF') as foo using unique gid using srid=25833"
+
+        MINSCALE 266002
+        MAXSCALE 2000000
+
+        METADATA
+            "queryable" "true"
+            "wms_title" " BB Basisdienst 2022, landwirtschaftlich"
+            "wms_abstract" ""
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,,Brandenburg,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25833 EPSG:31466 EPSG:31467"
+            "wms_extent" "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+
+        TYPE POLYGON
+        STATUS ON
+        
+        CLASSITEM 'nuta'
+
+        CLASS
+            NAME "Ackerland und ackerfähiges Grünland (LF A)"
+            EXPRESSION (  '[nuta]' == 'A')
+            STYLE
+                WIDTH 2
+                OUTLINECOLOR 0 128 0
+            END
+
+            TEXT '[brw] [entw]'
+            LABEL
+                POSITION CC
+                OFFSET 15 -15
+                TYPE TRUETYPE
+                FORCE TRUE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                ALIGN center
+                COLOR 0 64 0
+                OUTLINECOLOR 254 254 254
+                SIZE 8
+            END
+        END
+        CLASS
+            NAME "Dauergrünland (LF GR)"
+            EXPRESSION (  '[nuta]' == 'GR')
+            STYLE
+                WIDTH 2
+                OUTLINECOLOR 0 128 0
+            END
+            TEXT '[brw] [entw]'
+            LABEL
+                POSITION CC
+                TYPE TRUETYPE
+                FORCE TRUE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                ALIGN center
+                COLOR 0 64 0
+                OUTLINECOLOR 254 254 254
+                SIZE 8
+            END
+        END
+        CLASS
+            NAME "Forstwirtschaftliche Flächen und Wald (LF F)"
+            EXPRESSION (  '[nuta]' == 'F')
+            STYLE
+                WIDTH 2
+                OUTLINECOLOR 0 128 0
+            END
+            TEXT '[brw] [entw]'
+            LABEL
+                POSITION CC
+                OFFSET -15 15
+                TYPE TRUETYPE
+                FORCE TRUE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                ALIGN center
+                COLOR 0 64 0
+                OUTLINECOLOR 254 254 254
+                SIZE 8
+            END
+        END
+    END
+
+END

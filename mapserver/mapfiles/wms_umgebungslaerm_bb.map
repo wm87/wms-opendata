@@ -1,0 +1,221 @@
+MAP
+    NAME 'laerm_bb'
+    STATUS ON
+    SIZE 600 600
+
+    #DEBUG 5
+    CONFIG "MS_ERRORFILE" "/var/log/mapserver.log"
+
+    LEGEND
+        STATUS ON
+        IMAGECOLOR 238 238 238
+        KEYSIZE 18 12
+        KEYSPACING 5 5
+        LABEL
+            TYPE TRUETYPE
+            FORCE TRUE
+            FONT arial
+            SIZE 8
+            COLOR 0 0 89
+        END
+    END
+
+    OUTPUTFORMAT
+        NAME "png"
+        MIMETYPE "image/png"
+        DRIVER "GD/PNG"
+        EXTENSION "png"
+        IMAGEMODE RGB
+        TRANSPARENT FALSE
+    END # OUTPUTFORMAT
+
+    IMAGECOLOR 255 255 255
+    IMAGETYPE PNG
+
+    EXTENT 231617.067162 5679129.67849 500632.745409 5947019.05744
+    UNITS meters
+        
+    PROJECTION
+        "init=epsg:25833"
+    END
+    
+    SYMBOLSET "/etc/mapserver/symbols/symbols.sym"
+    FONTSET "/etc/mapserver/fonts/fonts.list"
+
+    WEB
+        IMAGEPATH '/tmp/'
+        IMAGEURL '/tmp/'
+        METADATA
+            "wms_title"                         "Basisdienst Umgebungslärm BB 2022"
+            "ows_keywordlist"                   "WMS,OGC,Umgebungslärm,AdVMIS"
+            "wms_abstract"                      ""
+            'ows_fees'                          'geldleistungsfrei, Datenlizenz Deutschland – Namensnennung – Version 2.0, URL: https://www.govdata.de/dl-de/by-2-0'
+            'ows_accessconstraints'             'Datenlizenz Deutschland – Namensnennung – Version 2.0; URL: https://www.govdata.de/dl-de/by-2-0 Die Namensnennung der Vermessungs- und Katasterverwaltung Brandenburg als Rechteinhaberin hat in folgender Weise zu erfolgen: ©GeoBasis-DE / LVermGeo BB (Jahr des Datenbezugs), dl-de/by-2-0, http://www.lvermgeo.BB.de [Daten bearbeitet]; Es gelten folgende Regelungen zu Gewährleistung und Haftung; URL: https://lvermgeo.bb.de/de/geodaten/opendata/gewaehrleistung-haftung/'
+            'ows_addresstype'                   'postal'
+            'ows_address'                       'Musterstraße 1'
+            'ows_city'                          'Musterstadt'
+            'ows_stateorprovince'               'DE-BB'
+            'ows_postcode'                      '01234'
+            'ows_country'                       'DE'
+            'ows_contactperson'                 'Max Mustermann'
+            'ows_contactinformation'            ''
+            'ows_contactorganization'           'Landesamt für Vermessung und Geobasisinformation Brandenburg'
+            'ows_contactposition'               'Geoinformationsdienste'
+            'ows_contactelectronicmailaddress'  'vertrieb@lvermegeo.bb.de'
+            'wms_contactfacsimiletelephone'     '+49 111 222 333'
+            'wms_contactvoicetelephone'         '+49 111 222 333'
+            "wms_srs"                           'EPSG:31466 EPSG:31467 EPSG:25833 EPSG:4326 EPSG:4258 EPSG:3857'
+            "wms_onlineresource"                "http://localhost:8081/wms/bb/umgebungslaerm_bb.fcgi?"
+            "wms_extent"                        "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_attribution_onlineresource"    "http://www.gutachterausschuesse.bb.de/"
+            "wms_attribution_title"             "BB Basisdienst 2022"
+            "wms_feature_info_mime_type"        "text/html"
+            'wms_encoding'                      'UTF-8'
+            'wms_enable_request'                '*'
+        END
+    END
+
+    #----------------------------------------------------------------------
+
+    LAYER
+        NAME 'bb_strasse_lden2017'
+        GROUP "LDEN 2017"
+        TYPE POLYGON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=postgres password='postgres' dbname=umgebungslaerm_bb host=pg port=5432 sslmode=disable"
+        DATA "wkb_geometry from (select * from bb_strasse_lden2017) AS foo USING UNIQUE ogc_fid USING SRID=25833"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+
+        METADATA
+            'wms_title'	'bb-strasse lden2017'
+            'wms_group_title'   'LDEN 2017'
+            'wms_srs'  	'EPSG:31466 EPSG:31467 EPSG:25832 EPSG:4326 EPSG:4258 EPSG:3857 EPSG:25833'
+            'wms_abstract' 	'Lärmkartierung Brandenburg'
+            'ows_keywordlist' 'DLM,Landschaftsmodell,Atkis'
+            'wms_extent' 	'231617.067162 5679129.67849 500632.745409 5947019.05744'
+        END
+        
+        STATUS ON
+        MAXSCALEDENOM 500000
+
+        CLASSITEM 'isov1'
+        INCLUDE "/etc/mapserver/styles/lden_isov1.map"
+
+    END
+
+
+
+    #----------------------------------------------------------------------
+
+    LAYER
+        NAME 'pdm_strasse_lden2022'
+        GROUP "LDEN 2022"
+        TYPE POLYGON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=postgres password='postgres' dbname=umgebungslaerm_bb host=pg port=5432 sslmode=disable"
+        DATA "wkb_geometry from (select * from pdm_strasse_lden2022) AS foo USING UNIQUE ogc_fid USING SRID=25833"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+
+        METADATA
+            'wms_title'	'pdm-strasse lden2022'
+            'wms_group_title'   'LDEN 2022'
+            'wms_srs'  	'EPSG:31466 EPSG:31467 EPSG:25832 EPSG:4326 EPSG:4258 EPSG:3857 EPSG:25833'
+            'wms_abstract' 	'Lärmkartierung Brandenburg'
+            'ows_keywordlist' 'DLM,Landschaftsmodell,Atkis'
+            'wms_extent' 	'231617.067162 5679129.67849 500632.745409 5947019.05744'
+        END
+        
+        STATUS ON
+        MAXSCALEDENOM 500000
+
+        CLASSITEM 'isov1'
+        INCLUDE "/etc/mapserver/styles/lden_isov1.map"
+    END
+
+
+    #----------------------------------------------------------------------
+
+    LAYER
+        NAME 'flug_lden2022'
+        GROUP "LDEN 2022"
+        TYPE POLYGON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=postgres password='postgres' dbname=umgebungslaerm_bb host=pg port=5432 sslmode=disable"
+        DATA "wkb_geometry from (select * from flug_lden2022) AS foo USING UNIQUE ogc_fid USING SRID=25833"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+
+        METADATA
+            'wms_title'	'flug lden2022'
+            'wms_group_title'   'LDEN 2022'
+            'wms_srs'  	'EPSG:31466 EPSG:31467 EPSG:25832 EPSG:4326 EPSG:4258 EPSG:3857 EPSG:25833'
+            'wms_abstract' 	'Lärmkartierung Brandenburg'
+            'ows_keywordlist' 'DLM,Landschaftsmodell,Atkis'
+            'wms_extent' 	'231617.067162 5679129.67849 500632.745409 5947019.05744'
+        END
+        
+        STATUS ON
+        MAXSCALEDENOM 500000
+
+        CLASSITEM 'index'
+        INCLUDE "/etc/mapserver/styles/lden_index.map"
+
+    END
+
+
+    #----------------------------------------------------------------------
+
+    LAYER
+        NAME 'pdm_industrie_lden2022'
+        GROUP "LDEN 2022"
+        TYPE POLYGON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=postgres password='postgres' dbname=umgebungslaerm_bb host=pg port=5432 sslmode=disable"
+        DATA "wkb_geometry from (select * from pdm_industrie_lden2022) AS foo USING UNIQUE ogc_fid USING SRID=25833"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+
+        METADATA
+            'wms_title'	'pdm-industrie lden2022'
+            'wms_group_title'   'LDEN 2022'
+            'wms_srs'  	'EPSG:31466 EPSG:31467 EPSG:25832 EPSG:4326 EPSG:4258 EPSG:3857 EPSG:25833'
+            'wms_abstract' 	'Lärmkartierung Brandenburg'
+            'ows_keywordlist' 'DLM,Landschaftsmodell,Atkis'
+            'wms_extent' 	'231617.067162 5679129.67849 500632.745409 5947019.05744'
+        END
+        
+        STATUS ON
+        MAXSCALEDENOM 500000
+
+        CLASSITEM 'isov1'
+        INCLUDE "/etc/mapserver/styles/lden_isov1.map"
+    END
+
+
+    #----------------------------------------------------------------------
+
+    LAYER
+        NAME 'pdm_schiene_lden2022'
+        GROUP "LDEN 2022"
+        TYPE POLYGON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=postgres password='postgres' dbname=umgebungslaerm_bb host=pg port=5432 sslmode=disable"
+        DATA "wkb_geometry from (select * from pdm_schiene_lden2022) AS foo USING UNIQUE ogc_fid USING SRID=25833"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+
+        METADATA
+            'wms_title'	'pdm-schiene lden2022'
+            'wms_group_title'   'LDEN 2022'
+            'wms_srs'  	'EPSG:31466 EPSG:31467 EPSG:25832 EPSG:4326 EPSG:4258 EPSG:3857 EPSG:25833'
+            'wms_abstract' 	'Lärmkartierung Brandenburg'
+            'ows_keywordlist' 'DLM,Landschaftsmodell,Atkis'
+            'wms_extent' 	'231617.067162 5679129.67849 500632.745409 5947019.05744'
+        END
+        
+        STATUS ON
+        MAXSCALEDENOM 500000
+
+        CLASSITEM 'isov1'
+        INCLUDE "/etc/mapserver/styles/lden_isov1.map"
+
+    END
+
+END

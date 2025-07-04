@@ -1,0 +1,34 @@
+SYMBOLSET
+
+SYMBOL
+    NAME "line"
+    TYPE VECTOR
+    POINTS
+    0 0
+    0 1
+    1 1
+    1 0
+    0 0
+END
+END
+
+
+SYMBOL
+    NAME "circlef"
+    TYPE ellipse
+    FILLED true
+    POINTS
+    1 1
+END # POINTS
+END # SYMBOL
+
+SYMBOL
+    NAME "simpleline"
+    TYPE ellipse
+    POINTS
+    0 0
+    1 0
+END
+END
+
+END

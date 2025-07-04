@@ -1,0 +1,39 @@
+CLASS
+    NAME '>= 55 ...< 60 dB'
+    EXPRESSION ( [isov1] >= 55 AND [isov1] < 60 )
+    STYLE
+        COLOR 249 168 126
+    END
+END
+
+CLASS
+    NAME '>= 60 ...< 65 dB'
+    EXPRESSION ( [isov1] >= 60 AND [isov1] < 65 )
+    STYLE
+        COLOR 236 117 126
+    END
+END
+
+CLASS
+    NAME '>= 65 ...< 70 dB'
+    EXPRESSION ( [isov1] >= 65 AND [isov1] < 70 )
+    STYLE
+        COLOR 198 91 96
+    END
+END
+
+CLASS
+    NAME '>= 70 ...< 75 dB'
+    EXPRESSION ( [isov1] >= 70 AND [isov1] < 75 )
+    STYLE
+        COLOR 196 129 189
+    END
+END
+
+CLASS
+    NAME '>= 75 dB'
+    EXPRESSION ( [isov1] >= 75 )
+    STYLE
+        COLOR 99 151 203
+    END
+END

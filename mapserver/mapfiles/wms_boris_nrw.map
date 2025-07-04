@@ -1,0 +1,413 @@
+MAP
+    NAME "Bodenrichtwerte_Basis_NRW"
+    STATUS ON
+    SIZE 600 600
+
+    #DEBUG 5
+    CONFIG "MS_ERRORFILE" "/var/log/mapserver.log"
+
+    LEGEND
+        STATUS ON
+        IMAGECOLOR 238 238 238
+        KEYSIZE 18 12
+        KEYSPACING 5 5
+        LABEL
+            TYPE TRUETYPE
+            FORCE TRUE
+            FONT arial
+            SIZE 8
+            COLOR 0 0 89
+        END
+    END
+
+    OUTPUTFORMAT
+        NAME "png"
+        MIMETYPE "image/png"
+        DRIVER "GD/PNG"
+        EXTENSION "png"
+        IMAGEMODE RGB
+        TRANSPARENT FALSE
+    END # OUTPUTFORMAT
+
+    IMAGECOLOR 255 255 255
+    IMAGETYPE PNG
+
+    EXTENT 280375.039 5573233.639 531799.013 5824657.613
+    UNITS meters
+        
+    PROJECTION
+        "init=epsg:25832"
+    END
+    
+    SYMBOLSET "/etc/mapserver/symbols/symbols.sym"
+    FONTSET "/etc/mapserver/fonts/fonts.list"
+
+    DEBUG ON
+    WEB
+        IMAGEPATH "/tmp/"
+        IMAGEURL "/tmp/"
+        METADATA
+            "wms_title"                         "Basisdienst BORIS NRW 2025"
+            "ows_keywordlist"                   "WMS,OGC,Bodenrichtwerte,Richtwerte,BORIS,Grundstückswert,Bodenwert,Bodenpreis,AdVMIS"
+            "wms_abstract"                      ""
+            "wms_extent"                        "280375.039 5573233.639 531799.013 5824657.613"
+            'ows_fees'                          'geldleistungsfrei, Datenlizenz Deutschland – Namensnennung – Version 2.0, URL: https://www.govdata.de/dl-de/by-2-0'
+            'ows_accessconstraints'             'Datenlizenz Deutschland – Namensnennung – Version 2.0; URL: https://www.govdata.de/dl-de/by-2-0 Die Namensnennung der Vermessungs- und Katasterverwaltung Brandenburg als Rechteinhaberin hat in folgender Weise zu erfolgen: ©GeoBasis-DE / LVermGeo NRW (Jahr des Datenbezugs), dl-de/by-2-0, http://www.lvermgeo.NRW.de [Daten bearbeitet]; Es gelten folgende Regelungen zu Gewährleistung und Haftung; URL: https://lvermgeo.nrw.de/de/geodaten/opendata/gewaehrleistung-haftung/'
+            'ows_addresstype'                   'postal'
+            'ows_address'                       'Musterstraße 1'
+            'ows_city'                          'Musterstadt'
+            'ows_stateorprovince'               'DE-NRW'
+            'ows_postcode'                      '01234'
+            'ows_country'                       'DE'
+            'ows_contactperson'                 'Max Mustermann'
+            'ows_contactinformation'            ''
+            'ows_contactorganization'           'Landesamt für Vermessung und Geobasisinformation NRW'
+            'ows_contactposition'               'Geoinformationsdienste'
+            'ows_contactelectronicmailaddress'  'vertrieb@lvermegeo.nrw.de'
+            'wms_contactfacsimiletelephone'     '+49 111 222 333'
+            'wms_contactvoicetelephone'         '+49 111 222 333'
+            "wms_srs"                           'EPSG:31466 EPSG:31467 EPSG:25833 EPSG:4326 EPSG:4258 EPSG:3857'
+            "wms_onlineresource"                "http://localhost:8081/wms/nrw/boris_nrw.fcgi?"
+            "wms_extent"                        "231617.067162 5679129.67849 500632.745409 5947019.05744"
+            "wms_attribution_onlineresource"    "http://www.gutachterausschuesse.nrw.de/"
+            "wms_attribution_title"             "NRW Basisdienst 2025"
+            "wms_feature_info_mime_type"        "text/html"
+            'wms_encoding'                      'UTF-8'
+            'wms_enable_request'                '*'
+        END
+    END
+
+    # NRW
+    LAYER
+        NAME 'NRW_0'
+        GROUP 'Richtwertzonen'
+        CONNECTION "user=postgres password='postgres' dbname=boris_nrw host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom from (SELECT * FROM boris_nrw where entw = 'SF') as foo using unique gid using srid=25832"
+
+        MINSCALE 0
+        MAXSCALE 50000
+        LABELMINSCALE 0
+        LABELMAXSCALE 20000
+
+        METADATA
+            "queryable" "true"
+            "wms_title" "VBORIS NRW Basisdienst 2025"
+            "wms_abstract" "Zonale Bodenrichtwerte ohne Angabe der weiteren beschreibenden Merkmale des Bodenrichtwertgrundstücks, Stichtag 01.01.2025 - Nordrhein-Westfalen"
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,VBORIS,Nordrhein-Westfalen,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25832 EPSG:31466 EPSG:31467"
+            "wms_extent" "280375.039 5573233.639 531799.013 5824657.613"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+
+        TYPE POLYGON
+        STATUS ON
+
+        CLASSITEM 'nuta'
+
+        CLASS
+            NAME "Sondernutzungsflächen"
+            EXPRESSION ('[nuta]' == 'SN')
+            STYLE
+                WIDTH 2
+                OUTLINECOLOR 242 0 0
+            END
+        END
+    END
+
+    LAYER
+        NAME 'NRW_1'
+        CONNECTION "user=postgres password='postgres' dbname=boris_nrw host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom_point from (SELECT * FROM boris_nrw) as foo using unique gid using srid=25832"
+
+        MINSCALE 0
+        MAXSCALE 50000
+        LABELMINSCALE 0
+        LABELMAXSCALE 20000
+
+        METADATA
+            "queryable" "true"
+            "wms_title" "VBORIS NRW Basisdienst 2025"
+            "wms_abstract" "Zonale Bodenrichtwerte ohne Angabe der weiteren beschreibenden Merkmale des Bodenrichtwertgrundstücks, Stichtag 01.01.2025 - Nordrhein-Westfalen"
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,VBORIS,Nordrhein-Westfalen,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25832 EPSG:31466 EPSG:31467"
+            "wms_extent" "280375.039 5573233.639 531799.013 5824657.613"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+
+        TYPE POINT
+        STATUS ON
+
+        CLASSITEM 'nuta'
+
+        CLASS
+            NAME "Sondernutzungsflächen"
+            EXPRESSION ('[nuta]' == 'SN')
+            TEXT '[nuta]'
+            LABEL
+                POSITION CC
+                TYPE TRUETYPE
+                FORCE TRUE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                COLOR 0 0 0
+                OUTLINECOLOR 255 255 255
+                OUTLINEWIDTH 2
+                SIZE 10
+            END
+        END
+    END
+
+    LAYER
+        NAME 'NRW_2'
+        GROUP 'Richtwertzonen'
+        CONNECTION "user=postgres password='postgres' dbname=boris_nrw host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom from (SELECT * FROM boris_nrw where entw != 'SF') as foo using unique gid using srid=25832"
+
+        MINSCALE 0
+        MAXSCALE 50000
+        LABELMINSCALE 0
+        LABELMAXSCALE 20000
+
+        METADATA
+            "queryable" "true"
+            "wms_title" "VBORIS NRW Basisdienst 2025"
+            "wms_abstract" "Zonale Bodenrichtwerte ohne Angabe der weiteren beschreibenden Merkmale des Bodenrichtwertgrundstücks, Stichtag 01.01.2025 - Nordrhein-Westfalen"
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,VBORIS,Nordrhein-Westfalen,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25832 EPSG:31466 EPSG:31467"
+            "wms_extent" "280375.039 5573233.639 531799.013 5824657.613"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+        TYPE POLYGON
+        STATUS ON
+        TOLERANCE 1
+        TOLERANCEUNITS pixels
+
+        CLASSITEM 'farbe'
+        CLASSGROUP "default"
+
+        
+        CLASS
+            NAME "Ein- bis zweigeschossige Bauweise"
+            GROUP "default"
+            EXPRESSION ('[farbe]' == '1')
+            STYLE
+                #SYMBOL 'line'
+                WIDTH 2
+                OUTLINECOLOR 242 0 0
+            END #end style fuer Linien
+        END #END CLASSITEM
+
+        CLASS
+            NAME "Misch- oder mehrgeschossige Bauweise"
+            GROUP "default"
+            EXPRESSION ('[farbe]' == '2')
+            STYLE
+                #SYMBOL 'line'
+                WIDTH 2
+                OUTLINECOLOR 242 0 0
+            END #end style fuer Linien
+        END #END CLASSITEM
+
+        CLASS
+            NAME "Gewerbe/Industrie/Sondergebiete"
+            GROUP "default"
+            EXPRESSION ('[farbe]' == '3')
+            STYLE
+                #SYMBOL 'line'
+                WIDTH 2
+                OUTLINECOLOR 242 0 0
+            END #end style fuer Linien
+        END #END CLASSITEM
+
+        CLASS
+            NAME "Forstwirtschaft"
+            GROUP "default"
+            EXPRESSION ('[farbe]' == '4')
+            STYLE
+                #SYMBOL 'line'
+                WIDTH 2
+                OUTLINECOLOR 242 0 0
+            END #end style fuer Linien
+        END #END CLASSITEM
+
+        CLASS
+            NAME "Landwirtschaft"
+            GROUP "default"
+            EXPRESSION ('[farbe]' == '5')
+            STYLE
+                #SYMBOL 'line'
+                WIDTH 2
+                OUTLINECOLOR 242 0 0
+            END #end style fuer Linien
+        END #END CLASSITEM
+
+        CLASS
+            NAME "Außenbereich"
+            GROUP "default"
+            EXPRESSION ('[farbe]' == '6')
+            STYLE
+                #SYMBOL 'line'
+                WIDTH 2
+                OUTLINECOLOR 242 0 0
+            END #end style fuer Linien
+        END #END CLASSITEM
+
+    END
+
+    LAYER
+        NAME 'NRW_3'
+        CONNECTION "user=postgres password='postgres' dbname=boris_nrw host=pg port=5432 sslmode=disable"
+        CONNECTIONTYPE postgis
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        DATA "geom_point from (SELECT * FROM boris_nrw) as foo using unique gid using srid=25832"
+
+        MINSCALE 0
+        MAXSCALE 50000
+        LABELMINSCALE 0
+        LABELMAXSCALE 20000
+
+
+        METADATA
+            "queryable" "true"
+            "wms_title" "VBORIS NRW Basisdienst 2025"
+            "wms_abstract" "Zonale Bodenrichtwerte ohne Angabe der weiteren beschreibenden Merkmale des Bodenrichtwertgrundstücks, Stichtag 01.01.2025 - Nordrhein-Westfalen"
+            "ows_keywordlist" "Bodenrichtwerte,Richtwerte,BORIS,VBORIS,Nordrhein-Westfalen,AdVMIS"
+            "wms_srs" "EPSG:4326 EPSG:25832 EPSG:31466 EPSG:31467"
+            "wms_extent" "280375.039 5573233.639 531799.013 5824657.613"
+            "wms_metadataurl_type" "TC211"
+            "wms_dataurl_format" "text/html"
+            "wms_style_default_title" "default"
+            "wms_format" "image/png"
+            "wms_feature_info_mime_type" "text/html"
+        END
+
+        TYPE POINT
+        STATUS ON
+        TOLERANCE 1
+        TOLERANCEUNITS pixels
+
+        CLASSITEM 'farbe'
+
+        
+        CLASS
+            NAME "Ein- bis zweigeschossige Bauweise"
+            EXPRESSION ('[farbe]' == '1')
+            TEXT '[brw]'
+            LABEL
+                POSITION CC
+                TYPE TRUETYPE
+                FORCE TRUE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                COLOR 3 73 252
+                OUTLINECOLOR 255 255 255
+                OUTLINEWIDTH 2
+                SIZE 10
+            END #END LABEL
+        END #END CLASSITEM
+
+        CLASS
+            NAME "Misch- oder mehrgeschossige Bauweise"
+            EXPRESSION ('[farbe]' == '2')
+            TEXT '[brw]'
+            LABEL
+                POSITION CC
+                TYPE TRUETYPE
+                FORCE TRUE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                COLOR 252 28 3
+                OUTLINECOLOR 255 255 255
+                OUTLINEWIDTH 2
+                SIZE 10
+            END #END LABEL
+        END #END CLASSITEM
+
+        CLASS
+            NAME "Gewerbe/Industrie/Sondergebiete"
+            EXPRESSION ('[farbe]' == '3')
+            TEXT '[brw]'
+            LABEL
+                POSITION CC
+                TYPE TRUETYPE
+                FORCE TRUE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                COLOR 0 0 0
+                OUTLINECOLOR 255 255 255
+                OUTLINEWIDTH 2
+                SIZE 10
+            END #END LABEL
+        END #END CLASSITEM
+
+        CLASS
+            NAME "Forstwirtschaft"
+            EXPRESSION ('[farbe]' == '4')
+            TEXT '[brw]'
+            LABEL
+                POSITION CC
+                TYPE TRUETYPE
+                FORCE TRUE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                COLOR 22 128 18
+                OUTLINECOLOR 255 255 255
+                OUTLINEWIDTH 2
+                SIZE 10
+            END #END LABEL
+        END #END CLASSITEM
+
+        CLASS
+            NAME "Landwirtschaft"
+            EXPRESSION ('[farbe]' == '5')
+            TEXT '[brw]'
+            LABEL
+                POSITION CC
+                TYPE TRUETYPE
+                FORCE TRUE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                COLOR 156 104 26
+                OUTLINECOLOR 255 255 255
+                OUTLINEWIDTH 2
+                SIZE 10
+            END #END LABEL
+        END #END CLASSITEM
+
+        CLASS
+            NAME "Außenbereich"
+            EXPRESSION ('[farbe]' == '6')
+            TEXT '[brw]'
+            LABEL
+                POSITION CC
+                TYPE TRUETYPE
+                FORCE TRUE
+                ANTIALIAS TRUE
+                FONT 'arialbold'
+                COLOR 112 24 120
+                OUTLINECOLOR 255 255 255
+                OUTLINEWIDTH 2
+                SIZE 10
+            END #END LABEL
+        END #END CLASSITEM
+
+    END
+END #end map

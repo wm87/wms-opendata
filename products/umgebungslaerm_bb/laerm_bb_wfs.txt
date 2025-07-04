@@ -1,0 +1,8 @@
+# GetCapabilities
+https://inspire.brandenburg.de/services/laerm_wfs?&service=WFS&request=GetCapabilities&service=WFS&version=2.0.0
+
+# Describe Fateure Type
+https://inspire.brandenburg.de/services/laerm_wfs?request=DescribeFeatureType&service=wfs&version=2.0.0&typeNames=app:bb_strasse_lden2022
+
+# Get-Feature
+curl "https://inspire.brandenburg.de/services/laerm_wfs?service=WFS&request=GetFeature&version=2.0.0&startindex=0&typeNames=bb_strasse_lden2022&srsName=EPSG:25832&outputFormat=GML3" -o file_bb.gml

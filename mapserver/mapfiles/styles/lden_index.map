@@ -1,0 +1,39 @@
+CLASS
+    NAME '>= 55 ...< 60 dB'
+    EXPRESSION "LDEN ab 55 bis 59 dB(A)"
+    STYLE
+        COLOR 249 168 126
+    END
+END
+
+CLASS
+    NAME '>= 60 ...< 65 dB'
+    EXPRESSION "LDEN ab 60 bis 64 dB(A)"
+    STYLE
+        COLOR 236 117 126
+    END
+END
+
+CLASS
+    NAME '>= 65 ...< 70 dB'
+    EXPRESSION "LDEN ab 65 bis 69 dB(A)"
+    STYLE
+        COLOR 198 91 96
+    END
+END
+
+CLASS
+    NAME '>= 70 ...< 75 dB'
+    EXPRESSION "LDEN ab 70 bis 74 dB(A)"
+    STYLE
+        COLOR 196 129 189
+    END
+END
+
+CLASS
+    NAME '>= 75 dB'
+    EXPRESSION "LDEN ab 75 dB(A)"
+    STYLE
+        COLOR 99 151 203
+    END
+END
