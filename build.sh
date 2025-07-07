@@ -37,6 +37,7 @@ check_db_exists() {
 check_db_exists "boris_bb"
 check_db_exists "boris_nrw"
 
+
 # Test
 docker exec -it pg psql -U postgres -d boris_bb -c "\dt"
 

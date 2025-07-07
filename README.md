@@ -48,9 +48,19 @@ curl "http://localhost:8081/wms/bb/boris_bb.fcgi?SERVICE=WMS&REQUEST=GetCapabili
 curl "http://localhost:8081/wms/nrw/boris_nrw.fcgi?SERVICE=WMS&REQUEST=GetCapabilities"
 ```
 
-## Nutzung in QGIS
+## Nutzung als WMS in QGIS
 
 ```text
 http://localhost:8081/wms/bb/boris_bb.fcgi?
 http://localhost:8081/wms/nrw/boris_nrw.fcgi?
 ```
+
+## 📊 Screenshot's aus QGIS
+
+### BORIS BB 2022
+
+![BORIS_BB](screen_bb.png "boris_bb")
+
+### BORIS NRW 2025
+
+![BORIS_NRW](screen_nrw.png "boris_nrw")

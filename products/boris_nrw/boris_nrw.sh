@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# deklaration #
 dbname="boris_nrw"
 dbtable="boris_nrw"
 cores=6
@@ -10,7 +9,7 @@ boris_nrwShpFile="/data/boris_nrw/BRW_*_Polygon.shp"
 
 echo "******* $dbname *******"
 
-bash /boris_nrw/load_data_boris_nrw.sh
+bash /products/boris_nrw/load_data_boris_nrw.sh
 
 # Lade DB-Verbindungsparameter
 source /importer/db_params.sh $dbname
@@ -48,7 +47,7 @@ if [ -f $boris_nrwShpFile ]; then
     psql -c "COMMENT ON TABLE $dbtable IS 'IMPORT: "$insertdatum"';" $CON
 fi
 
-bash /boris_nrw/modification.sh
+bash /products/boris_nrw/modification.sh
 
 echo "==> Datenbank mit VACUUM optimieren..."
 psql -c "VACUUM ANALYZE boris_nrw;" $CON
