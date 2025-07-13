@@ -68,6 +68,6 @@ echo "==> Datenbank mit VACUUM optimieren..."
 psql -c "VACUUM ANALYZE ${DBTABLE};" -U "$PGUSER" -d "$DBNAME"
 
 # Mapfile, Icon's updaten
-/usr/bin/python3 /products/tfis_nrw/build/mapbox2mapserver.py
+/usr/bin/python3 /products/tfis_nrw/transform/mapbox2mapserver.py
 
 echo "✅ Fertig."

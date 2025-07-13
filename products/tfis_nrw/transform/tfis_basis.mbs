@@ -1,0 +1,484 @@
+{
+  "version" : 8,
+  "name" : "Basisstil",
+  "center" : [ 6.96, 50.94 ],
+  "zoom" : 12.0,
+  "bearing" : 0.0,
+  "pitch" : 0.0,
+  "sources" : {
+    "tfis" : {
+      "tiles" : [ "https://ogc-api-test.nrw.de/tfis/tiles/WebMercatorQuad/{z}/{y}/{x}?f=mvt" ],
+      "bounds" : [ 5.765110958993002, 50.31026783780871, 9.468654797134569, 52.53107367908055 ],
+      "scheme" : "xyz",
+      "maxzoom" : 24,
+      "type" : "vector"
+    }
+  },
+  "sprite" : "https://ogc-api-test.nrw.de/tfis/resources/sprite",
+  "glyphs" : "https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/fonts/{fontstack}/{range}.pbf",
+  "layers" : [ {
+    "id" : "Fernwanderwege",
+    "type" : "line",
+    "source" : "tfis",
+    "source-layer" : "wanderwege",
+    "minzoom" : 9,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "kat" ], "Fernwanderweg" ],
+    "layout" : {
+      "line-cap" : "butt",
+      "line-join" : "miter"
+    },
+    "paint" : {
+      "line-color" : "#F5C710",
+      "line-width" : 3.357
+    }
+  }, {
+    "id" : "Hauptwanderwege",
+    "type" : "line",
+    "source" : "tfis",
+    "source-layer" : "wanderwege",
+    "minzoom" : 11,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "kat" ], "Hauptwanderweg" ],
+    "layout" : {
+      "line-cap" : "butt",
+      "line-join" : "miter"
+    },
+    "paint" : {
+      "line-color" : "#009E73",
+      "line-width" : 3.357,
+      "line-dasharray" : [ 1, 2 ]
+    }
+  }, {
+    "id" : "Regionale Wanderwege",
+    "type" : "line",
+    "source" : "tfis",
+    "source-layer" : "wanderwege",
+    "minzoom" : 13,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "kat" ], "Regionaler Wanderweg" ],
+    "layout" : {
+      "line-cap" : "butt",
+      "line-join" : "miter"
+    },
+    "paint" : {
+      "line-color" : "#D55E00",
+      "line-width" : 3.357,
+      "line-dasharray" : [ 3, 3.5 ]
+    }
+  }, {
+    "id" : "Örtliche Wanderwege",
+    "type" : "line",
+    "source" : "tfis",
+    "source-layer" : "wanderwege",
+    "minzoom" : 13,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "kat" ], "Örtlicher Wanderweg" ],
+    "layout" : {
+      "line-cap" : "butt",
+      "line-join" : "miter"
+    },
+    "paint" : {
+      "line-color" : "#CC79A7",
+      "line-width" : 3.357,
+      "line-dasharray" : [ 2, 5.8 ]
+    }
+  }, {
+    "id" : "Rundwanderwege",
+    "type" : "line",
+    "source" : "tfis",
+    "source-layer" : "wanderwege",
+    "minzoom" : 13,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "kat" ], "Rundwanderweg" ],
+    "layout" : {
+      "line-cap" : "butt",
+      "line-join" : "miter"
+    },
+    "paint" : {
+      "line-color" : "#56B4E9",
+      "line-width" : 3.357,
+      "line-dasharray" : [ 3, 5 ]
+    }
+  }, {
+    "id" : "Themenwanderwege",
+    "type" : "line",
+    "source" : "tfis",
+    "source-layer" : "wanderwege",
+    "minzoom" : 12,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "kat" ], "Themenwanderweg" ],
+    "layout" : {
+      "line-cap" : "butt",
+      "line-join" : "miter"
+    },
+    "paint" : {
+      "line-color" : "#E69F00",
+      "line-width" : 3.357,
+      "line-dasharray" : [ 7, 4 ]
+    }
+  }, {
+    "id" : "Schifffahrt Ausflugsverkehr",
+    "type" : "line",
+    "source" : "tfis",
+    "source-layer" : "schifffahrt",
+    "minzoom" : 8,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "fkt" ], "Ausflugsverkehr" ],
+    "layout" : {
+      "line-cap" : "butt",
+      "line-join" : "miter"
+    },
+    "paint" : {
+      "line-color" : "#0072B2",
+      "line-width" : 3.357
+    }
+  }, {
+    "id" : "Schifffahrt Autofähre",
+    "type" : "line",
+    "source" : "tfis",
+    "source-layer" : "schifffahrt",
+    "minzoom" : 8,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "fkt" ], "Autofähre" ],
+    "layout" : {
+      "line-cap" : "butt",
+      "line-join" : "miter"
+    },
+    "paint" : {
+      "line-color" : "#0072B2",
+      "line-width" : 3.357,
+      "line-dasharray" : [ 2, 2 ]
+    }
+  }, {
+    "id" : "Schifffahrt Personenfähre",
+    "type" : "line",
+    "source" : "tfis",
+    "source-layer" : "schifffahrt",
+    "minzoom" : 8,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "fkt" ], "Personenfähre" ],
+    "layout" : {
+      "line-cap" : "butt",
+      "line-join" : "miter"
+    },
+    "paint" : {
+      "line-color" : "#0072B2",
+      "line-width" : 3.357,
+      "line-dasharray" : [ 0.5, 0.5 ]
+    }
+  }, {
+    "id" : "Schifffahrt Autofähre Kennzeichen",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "schifffahrt",
+    "minzoom" : 12,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "fkt" ], "Autofähre" ],
+    "layout" : {
+      "symbol-placement" : "line",
+      "icon-image" : "Autofaehre",
+      "icon-size" : 0.8,
+      "icon-rotation-alignment" : "viewport",
+      "icon-padding" : 50
+    }
+  }, {
+    "id" : "Schifffahrt Personenfähre Kennzeichen",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "schifffahrt",
+    "minzoom" : 12,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "fkt" ], "Personenfähre" ],
+    "layout" : {
+      "symbol-placement" : "line",
+      "icon-image" : "Personenfaehre",
+      "icon-size" : 0.8,
+      "icon-rotation-alignment" : "viewport",
+      "icon-padding" : 50
+    }
+  }, {
+    "id" : "Rundwanderwege Kennzeichen",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "wanderwege",
+    "minzoom" : 14,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "kat" ], "Rundwanderweg" ],
+    "layout" : {
+      "symbol-placement" : "line",
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6,
+      "icon-rotation-alignment" : "viewport",
+      "symbol-spacing" : 200,
+      "icon-padding" : 10
+    }
+  }, {
+    "id" : "Themenwanderwege Kennzeichen",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "wanderwege",
+    "minzoom" : 12,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "kat" ], "Themenwanderweg" ],
+    "layout" : {
+      "symbol-placement" : "line",
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6,
+      "icon-rotation-alignment" : "viewport",
+      "symbol-spacing" : 200,
+      "icon-padding" : 10
+    }
+  }, {
+    "id" : "Örtliche Wanderwege Kennzeichen",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "wanderwege",
+    "minzoom" : 13,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "kat" ], "Örtlicher Wanderweg" ],
+    "layout" : {
+      "symbol-placement" : "line",
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6,
+      "icon-rotation-alignment" : "viewport",
+      "symbol-spacing" : 200,
+      "icon-padding" : 10
+    }
+  }, {
+    "id" : "Regionale Wanderwege Kennzeichen",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "wanderwege",
+    "minzoom" : 13,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "kat" ], "Regionaler Wanderweg" ],
+    "layout" : {
+      "symbol-placement" : "line",
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6,
+      "icon-rotation-alignment" : "viewport",
+      "symbol-spacing" : 200,
+      "icon-padding" : 10
+    }
+  }, {
+    "id" : "Hauptwanderwege Kennzeichen",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "wanderwege",
+    "minzoom" : 11,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "kat" ], "Hauptwanderweg" ],
+    "layout" : {
+      "symbol-placement" : "line",
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6,
+      "icon-rotation-alignment" : "viewport",
+      "symbol-spacing" : 200,
+      "icon-padding" : 10
+    }
+  }, {
+    "id" : "Fernwanderwege Kennzeichen",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "wanderwege",
+    "minzoom" : 10,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "kat" ], "Fernwanderweg" ],
+    "layout" : {
+      "symbol-placement" : "line",
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6,
+      "icon-rotation-alignment" : "viewport",
+      "symbol-spacing" : 200,
+      "icon-padding" : 10
+    }
+  }, {
+    "id" : "Bahnhof",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "verkehr",
+    "minzoom" : 10,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "fkt" ], "Bahnhof" ],
+    "layout" : {
+      "icon-allow-overlap" : true,
+      "icon-ignore-placement" : true,
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6
+    }
+  }, {
+    "id" : "Flughafen regional und international",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "verkehr",
+    "minzoom" : 14,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "fkt" ], "Flughafen regional und international" ],
+    "layout" : {
+      "icon-allow-overlap" : true,
+      "icon-ignore-placement" : true,
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6
+    }
+  }, {
+    "id" : "Haltepunkt",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "verkehr",
+    "minzoom" : 10,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "fkt" ], "Haltepunkt" ],
+    "layout" : {
+      "icon-allow-overlap" : true,
+      "icon-ignore-placement" : true,
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6
+    }
+  }, {
+    "id" : "Parkplatz",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "verkehr",
+    "minzoom" : 12,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "fkt" ], "Parkplatz" ],
+    "layout" : {
+      "icon-allow-overlap" : true,
+      "icon-ignore-placement" : true,
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6
+    }
+  }, {
+    "id" : "Wanderparkplatz",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "verkehr",
+    "minzoom" : 12,
+    "maxzoom" : 24,
+    "filter" : [ "==", [ "get", "fkt" ], "Wanderparkplatz" ],
+    "layout" : {
+      "icon-allow-overlap" : true,
+      "icon-ignore-placement" : true,
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6
+    }
+  }, {
+    "id" : "Unterkunft & Rast",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "unterkunft_rast",
+    "minzoom" : 12,
+    "maxzoom" : 24,
+    "layout" : {
+      "icon-allow-overlap" : true,
+      "icon-ignore-placement" : true,
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6
+    }
+  }, {
+    "id" : "Touristikinformation",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "touristikinformation",
+    "minzoom" : 12,
+    "maxzoom" : 24,
+    "layout" : {
+      "icon-allow-overlap" : true,
+      "icon-ignore-placement" : true,
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6
+    }
+  }, {
+    "id" : "Infrastruktur Wassersport",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "infrastruktur_wassersport",
+    "minzoom" : 14,
+    "maxzoom" : 24,
+    "layout" : {
+      "icon-allow-overlap" : true,
+      "icon-ignore-placement" : true,
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6
+    }
+  }, {
+    "id" : "Museen",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "museen",
+    "minzoom" : 14,
+    "maxzoom" : 24,
+    "layout" : {
+      "icon-allow-overlap" : true,
+      "icon-ignore-placement" : true,
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6
+    }
+  }, {
+    "id" : "Theater & Musik",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "theater_musik",
+    "minzoom" : 14,
+    "maxzoom" : 24,
+    "layout" : {
+      "icon-allow-overlap" : true,
+      "icon-ignore-placement" : true,
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6
+    }
+  }, {
+    "id" : "Sport & Baden",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "sport_baden",
+    "minzoom" : 14,
+    "maxzoom" : 24,
+    "layout" : {
+      "icon-allow-overlap" : true,
+      "icon-ignore-placement" : true,
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6
+    }
+  }, {
+    "id" : "Burgen, Schlösser, Mühlen, Denkmäler, etc.",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "burgen_denkmaeler_etc",
+    "minzoom" : 14,
+    "maxzoom" : 24,
+    "layout" : {
+      "icon-allow-overlap" : true,
+      "icon-ignore-placement" : true,
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6
+    }
+  }, {
+    "id" : "Natur",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "natur",
+    "minzoom" : 14,
+    "maxzoom" : 24,
+    "layout" : {
+      "icon-allow-overlap" : true,
+      "icon-ignore-placement" : true,
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6
+    }
+  }, {
+    "id" : "Aussichtspunkt",
+    "type" : "symbol",
+    "source" : "tfis",
+    "source-layer" : "aussichtspunkte",
+    "minzoom" : 12,
+    "maxzoom" : 24,
+    "layout" : {
+      "icon-allow-overlap" : true,
+      "icon-ignore-placement" : true,
+      "icon-image" : "{snr}",
+      "icon-size" : 0.6
+    }
+  } ]
+}
