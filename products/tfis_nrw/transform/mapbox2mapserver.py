@@ -9,8 +9,8 @@ safe_snrs = {}
 DATA_DIR = "/data/tfis_nrw"
 OUTPUT_MAPFILE = "/etc/mapserver/wms_tfis_nrw.map"
 SYMBOL_FILE = "/etc/mapserver/symbols.map"
-SPRITE_JSON_PATH = "/products/tfis_nrw/build/sprite@2x.json"
-SPRITE_IMAGE_PATH = "/products/tfis_nrw/build/sprite@2x.png"
+SPRITE_JSON_PATH = "/products/tfis_nrw/transform/sprite@2x.json"
+SPRITE_IMAGE_PATH = "/products/tfis_nrw/transform/sprite@2x.png"
 ICON_DIR = "/etc/mapserver/icons"
 
 
