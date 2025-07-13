@@ -9,23 +9,18 @@ services:
     ports:
       - "5433:5432"
     healthcheck:
-      test: [
-      "CMD-SHELL",
-      "pg_isready -U postgres && \
-        psql -U postgres -tAc \"SELECT 1 FROM pg_database WHERE datname='boris_bb'\" | grep -q 1 && \
-        psql -U postgres -tAc \"SELECT 1 FROM pg_database WHERE datname='boris_nrw'\" | grep -q 1 && \
-        psql -U postgres -tAc \"SELECT 1 FROM pg_database WHERE datname='umgebungslaerm_bb'\" | grep -q 1"
-      ]
+      test: ["CMD-SHELL", "/usr/local/bin/check_databases.sh"]
       interval: 5s
       timeout: 5s
       retries: 30
     volumes:
+      - ./check_databases.sh:/usr/local/bin/check_databases.sh:ro
       - db_data:/var/lib/postgresql/data
       - ./init:/docker-entrypoint-initdb.d
 
   importer:
     build: ./importer
-    container_name: boris_importer
+    container_name: importer
     depends_on:
       db:
         condition: service_healthy
@@ -38,6 +33,7 @@ services:
       - ./data:/data
       - ./importer:/importer
       - ./products:/products
+      - ./mapserver/mapfiles:/etc/mapserver
 
   mapserver:
     build: ./mapserver
@@ -47,6 +43,8 @@ services:
       - importer
     ports:
       - "8081:80"
+    volumes:
+      - ./mapserver/mapfiles:/etc/mapserver
 
 volumes:
   db_data:

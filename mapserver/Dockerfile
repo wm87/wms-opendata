@@ -12,10 +12,10 @@ RUN chmod 666 /var/log/mapserver.log
 COPY mapserver.conf /etc/mapserver.conf
 
 # restliche Dateien, z.B. fonts, symbols, mapfiles ...
-COPY mapfiles/fonts/ /etc/mapserver/fonts/
-COPY mapfiles/styles/ /etc/mapserver/styles/
-COPY mapfiles/symbols/ /etc/mapserver/symbols/
-COPY mapfiles/*.map /etc/mapserver
+#COPY mapfiles/fonts/ /etc/mapserver/fonts/
+#COPY mapfiles/styles/ /etc/mapserver/styles/
+#COPY mapfiles/symbols/ /etc/mapserver/symbols/
+#COPY mapfiles/*.map /etc/mapserver
 
 # Verzeichnisse für FCGI-Links anlegen
 RUN mkdir -p /usr/lib/fcgi-bin/wms/bb/ /usr/lib/fcgi-bin/wms/nrw/
@@ -23,7 +23,8 @@ RUN mkdir -p /usr/lib/fcgi-bin/wms/bb/ /usr/lib/fcgi-bin/wms/nrw/
 # FCGI-Symlinks anlegen
 RUN ln -s /usr/lib/cgi-bin/mapserv /usr/lib/fcgi-bin/wms/bb/boris_bb.fcgi \
     && ln -s /usr/lib/cgi-bin/mapserv /usr/lib/fcgi-bin/wms/bb/umgebungslaerm_bb.fcgi \
-    && ln -s /usr/lib/cgi-bin/mapserv /usr/lib/fcgi-bin/wms/nrw/boris_nrw.fcgi
+    && ln -s /usr/lib/cgi-bin/mapserv /usr/lib/fcgi-bin/wms/nrw/boris_nrw.fcgi \
+    && ln -s /usr/lib/cgi-bin/mapserv /usr/lib/fcgi-bin/wms/nrw/tfis_nrw.fcgi
 
 # Apache-Konfiguration aktivieren
 COPY configs/*.conf /etc/apache2/conf-available

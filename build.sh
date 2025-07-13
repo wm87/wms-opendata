@@ -1,52 +1,40 @@
 #!/bin/bash
-
-set -e
+set -euo pipefail
 
 docker-compose down
 docker system prune -a --volumes --force
 docker-compose up --build -d
 
-# Warten, bis der Container "pg" gesund ist
-echo "Warte auf Healthcheck..."
-for i in {1..20}; do
-    STATUS=$(docker inspect --format='{{.State.Health.Status}}' pg)
-    if [ "$STATUS" = "healthy" ]; then
-        echo "Postgres Container ist healthy."
-        break
-    fi
-    echo "Status: $STATUS. Warte..."
-    sleep 3
+# Warte auf Container
+echo "⏳ Warte auf PostgreSQL-Container 'pg'..."
+until docker exec pg pg_isready -U postgres >/dev/null 2>&1; do
+    sleep 1
 done
+echo "✅ Container 'pg' ist bereit."
 
-# Sicherstellen, dass die DB's exisieren
-echo "Warte auf Datenbank boris_bb..."
+# Funktion
 check_db_exists() {
-    local dbname=$1
-    echo "Warte auf Datenbank $dbname..."
-    for i in {1..20}; do
-        DB_EXISTS=$(docker exec pg psql -U postgres -tAc "SELECT 1 FROM pg_database WHERE datname='${dbname}'")
-        if [ "$DB_EXISTS" = "1" ]; then
-            echo "Datenbank $dbname existiert."
-            return 0
-        fi
-        echo "Noch nicht da, warte..."
-        sleep 2
-    done
+    local dbname="$1"
+    echo "🔍 Prüfe Datenbank: $dbname"
+
+    if docker exec -i pg psql -U postgres -tAc "SELECT 1 FROM pg_database WHERE datname='${dbname}'" | grep -q 1; then
+        echo "✅ Datenbank $dbname existiert."
+    else
+        echo "❌ Datenbank $dbname existiert nicht."
+        exit 1
+    fi
+
+    echo "📦 Tabellen in $dbname:"
+    docker exec -i pg psql -U postgres -d "$dbname" -c "\dt" || echo "(keine Tabellen oder kein Zugriff)"
+    echo
 }
 
+# Test, ob DB ansprechbar
 check_db_exists "boris_bb"
 check_db_exists "boris_nrw"
+check_db_exists "tfis_nrw"
+check_db_exists "umgebungslaerm_bb"
 
+docker exec -i mapserver mapserv -v
 
-# Test
-docker exec -it pg psql -U postgres -d boris_bb -c "\dt"
-
-docker exec -it pg psql -U postgres -d boris_bb \
-    -c "SELECT COUNT(*) FROM boris_bb;"
-
-docker exec -it pg psql -U postgres -d boris_nrw -c "\dt"
-
-docker exec -it pg psql -U postgres -d boris_nrw \
-    -c "SELECT COUNT(*) FROM boris_nrw;"
-
-docker exec -it mapserver mapserv -v
+docker logs -f importer
