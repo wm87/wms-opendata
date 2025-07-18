@@ -238,3 +238,25 @@ Dieser WMS-Dienst stellt Tourismus- und Freizeitinformationen (TFIS) für NRW da
 - Darstellung von POIs, Wanderwegen, Schifffahrtsrouten
 - WMS-Dienste im Kontext von **INSPIRE** / **OGC**-Standards
 
+## 📌 Datenquellen und Lizenzen
+
+Dieses Projekt verwendet Daten aus folgenden Quellen:
+
+- BORIS-Daten BB:
+
+  - © Gutachterausschüsse für Grundstückswerte 2025, lizenziert unter [Datenlizenz Deutschland – Namensnennung – Version 2.0 (dl-de/by-2-0)](https://www.govdata.de/dl-de/by-2-0), http://www.gutachterausschuss-bb.de
+
+- NRW-Daten:
+  - lizenziert unter [Datenlizenz Deutschland – Zero – Version 2.0 (dl-de/zero-2-0)](https://www.govdata.de/dl-de/zero-2-0)
+
+- Umgebungslärm BB:
+  ```json
+  {
+    "id": "dl-by-de/2.0",
+    "name": "Datenlizenz Deutschland – Namensnennung – Version 2.0",
+    "url": "https://www.govdata.de/dl-de/by-2-0",
+    "quelle": "Land Brandenburg; https://inspire.brandenburg.de/services/laerm_wfs?; Lärmkartierung in Brandenburg INSPIRE Download-Service (WFS-LFU-LAERM); 2022 © Landesamt für Umwelt Brandenburg"
+  }
+  ```
+
+Die Daten unterliegen **nicht** der MIT-Lizenz dieses Repositories. Für deren Nutzung gelten die jeweiligen Bedingungen.
